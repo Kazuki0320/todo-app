@@ -21,13 +21,17 @@ export const App = () => {
     setText('')
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value)
+  }
+
   return (
     <div>
       <form onSubmit={(e) => {
         e.preventDefault();
         handleSubmit();
       }}>
-        <input type="test" value={text} onChange={(e) => setText(e.target.value)} />
+        <input type="test" value={text} onChange={(e) => handleChange(e)} />
         <input type="submit" value="追加"/>
       </form>
     </div>
