@@ -27,6 +27,25 @@ export const App = () => {
     setText(e.target.value)
   }
 
+  const handleEdit = (id: number, value: string) => {
+    setTodos((todos) => {
+      const newTodos = todos.map((todo) => {
+        if (todo.id === id) {
+          todo.value = value
+        }
+        return todo
+      })
+
+      // todos ステートが書き換えられていないかチェック
+      console.log('=== Original todos ===');
+      todos.map((todo) => {
+        console.log(`id: ${todo.id}, value: ${todo.value}`);
+      });
+
+      return newTodos;
+    })
+  }
+
   return (
     <div>
       <form onSubmit={(e) => {
@@ -35,7 +54,15 @@ export const App = () => {
       }}>
         <ul>
           {todos.map((todo) => {
-            return <li key={todo.id}>{todo.value}</li>
+            return (
+              <li key={todo.id}>
+                <input
+                  type="text"
+                  value={todo.value}
+                  onChange={(e) => handleEdit(todo.id, e.target.value)}
+                />
+              </li>
+            )
           })}
         </ul>
         <input type="test" value={text} onChange={(e) => handleChange(e)} />
