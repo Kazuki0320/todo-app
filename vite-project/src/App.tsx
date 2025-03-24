@@ -3,6 +3,7 @@ import { useState } from 'react';
 type Todo = {
   value: string;
   readonly id: number;
+  checked: boolean;
 };
 
 export const App = () => {
@@ -19,6 +20,7 @@ export const App = () => {
     const newTodo: Todo = {
       value: text,
       id: new Date().getTime(),
+      checked: false
     };
 
     setTodos((todos) => [newTodo, ...todos]);
@@ -29,14 +31,25 @@ export const App = () => {
     setTodos((todos) => {
       const newTodos = todos.map((todo) => {
         if (todo.id === id) {
-          return { ...todo, value };
+          return { ...todo, value};
         }
         return todo;
-      });
-
-      return newTodos;
-    });
+      })
+      return newTodos
+    })
   };
+
+  const handleCheck = (id: number, checked: boolean) => {
+    setTodos((todos) => {
+      const newTodos = todos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, checked }
+        }
+        return todo
+      })
+      return newTodos
+    });
+  }
 
   return (
     <div>
@@ -46,7 +59,10 @@ export const App = () => {
           handleSubmit();
         }}
       >
-        <input type="text" value={text} onChange={(e) => handleChange(e)} />
+        <input 
+        type="text"value={text} 
+        onChange={(e) => handleChange(e)}
+        />
         <input type="submit" value="追加" onSubmit={handleSubmit} />
       </form>
       <ul>
@@ -54,7 +70,13 @@ export const App = () => {
           return (
             <li key={todo.id}>
               <input
+                type="checkbox"
+                checked={todo.checked}
+                onChange={() => handleCheck(todo.id, !todo.checked)}
+              />
+              <input
                 type="text"
+                disabled={todo.checked}
                 value={todo.value}
                 onChange={(e) => handleEdit(todo.id, e.target.value)}
               />
